@@ -1,0 +1,8 @@
+interface:
+  display_name: "Create Ex Skill"
+  short_description: "Create a local ex persona skill from memories."
+  brand_color: "#7C3AED"
+  default_prompt: "Use $create-ex to help me create a privacy-conscious ex persona skill from my descriptions and selected local source material."
+
+policy:
+  allow_implicit_invocation: true

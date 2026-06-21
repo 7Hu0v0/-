@@ -1,214 +1,108 @@
-<div align="center">
+# 前任 Claw / Create Ex Skill
 
-# 前任.skill
+把聊天记录、照片时间线、社交媒体导出和你的主观描述，整理成一个本地 AI persona skill。这个版本基于 [perkfly/ex-skill](https://github.com/perkfly/ex-skill) 做 Codex 适配，同时保留 Claude Code 和 OpenClaw 的安装思路。
 
-> *"从此以后，你的手机里不止有聊天记录，还有一个她。"*
+它适合做：
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://python.org)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-blueviolet)](https://claude.ai/code)
-[![AgentSkills](https://img.shields.io/badge/AgentSkills-Standard-green)](https://agentskills.io)
+- Codex skill：`~/.codex/skills/create-ex`
+- Claude Code skill：`~/.claude/skills/create-ex`
+- OpenClaw skill：`~/.openclaw/workspace/skills/create-ex`
 
-<br>
-
-她走了，但聊天记录还在？<br>
-三年的日常，变成了手机里一个不敢点开的对话框？<br>
-你还记得她说"随便"的时候其实想吃火锅吗？<br>
-你还记得她发"哦"的时候其实在等你主动吗？<br>
-
-**将回忆蒸馏成 Skill，不是为了挽回，是为了记住。**
-
-<br>
-
-提供聊天记录（微信、iMessage、短信）、照片、社交媒体，加上你的主观描述<br>
-生成一个**像她一样说话的 AI Skill**<br>
-用她的语气回消息，知道她什么时候在撒娇、什么时候真的生气了
-
-[数据来源](#支持的数据来源) · [安装](#安装) · [使用](#使用) · [效果示例](#效果示例) · [详细安装说明](INSTALL.md) · [**English**](README_EN.md)
-
-</div>
-
----
+> 这不是为了冒充真实的人。请把它当作基于记忆材料的本地反思、角色练习或写作 persona。
 
 ## 支持的数据来源
 
-| 来源 | 聊天记录 | 照片 | 社交媒体 | 备注 |
-|------|:-------:|:----:|:-------:|------|
-| 微信聊天记录 | ✅ | — | — | WechatExporter 等工具导出 |
-| iMessage | ✅ | — | — | macOS chat.db 或导出文件 |
-| 短信 | ✅ | — | — | Android SMS Backup XML/CSV |
-| 照片 | — | ✅ | — | EXIF 元数据提取时间线 |
-| 微博 | — | — | ✅ | JSON 数据导出 |
-| 豆瓣 | — | — | ✅ | JSON/HTML 导出 |
-| 小红书 | — | — | ✅ | JSON 导出 |
-| Instagram | — | — | ✅ | JSON 数据导出 |
-| PDF / 图片 | ✅ | ✅ | — | 手动上传 |
-| 直接粘贴文字 | ✅ | — | — | 手动输入 |
-
----
+| 来源 | 支持内容 |
+| --- | --- |
+| 微信聊天记录 | WechatExporter 等工具导出的 txt/html/csv |
+| iMessage | macOS `chat.db` 或导出文件 |
+| 短信 | XML/CSV/TXT |
+| 照片 | EXIF 日期、地点等元数据时间线 |
+| 社交媒体 | 微博、豆瓣、小红书、Instagram 导出 |
+| 其他文件 | PDF、截图、Markdown、TXT |
+| 手动描述 | 只靠昵称、关系信息、性格标签也能生成 |
 
 ## 安装
+
+### Codex
+
+全局安装：
+
+```bash
+mkdir -p ~/.codex/skills
+git clone https://github.com/7Hu0v0/- ~/.codex/skills/create-ex
+```
+
+项目内安装：
+
+```bash
+mkdir -p .codex/skills
+git clone https://github.com/7Hu0v0/- .codex/skills/create-ex
+```
 
 ### Claude Code
 
 ```bash
-# 安装到当前项目（在 git 仓库根目录执行）
-mkdir -p .claude/skills
-git clone https://github.com/perkfly/ex-skill .claude/skills/create-ex
-
-# 或安装到全局（所有项目都能用）
-git clone https://github.com/perkfly/ex-skill ~/.claude/skills/create-ex
+mkdir -p ~/.claude/skills
+git clone https://github.com/7Hu0v0/- ~/.claude/skills/create-ex
 ```
 
 ### OpenClaw
 
 ```bash
-git clone https://github.com/perkfly/ex-skill ~/.openclaw/workspace/skills/create-ex
+git clone https://github.com/7Hu0v0/- ~/.openclaw/workspace/skills/create-ex
 ```
 
-### 依赖（可选）
+### 可选依赖
 
 ```bash
 pip3 install -r requirements.txt
 ```
 
----
+`pypinyin` 用于把中文昵称转成 slug。照片扩展格式可按需安装 `Pillow`。
 
 ## 使用
 
-在 Claude Code 中输入：
+在 Codex 里说：
 
-```
-/create-ex
-```
-
-按提示输入她的昵称、关系信息（如 `在一起三年 大学同学 分手一年`）、性格标签，然后选择数据来源。所有字段均可跳过，仅凭描述也能生成。
-
-完成后用 `/{slug}` 调用该前任 Skill。
-
-### 管理命令
-
-| 命令 | 说明 |
-|------|------|
-| `/list-exes` | 列出所有前任 Skill |
-| `/{slug}` | 调用完整 Skill（Persona + Memories） |
-| `/{slug}-memories` | 仅共同记忆 |
-| `/{slug}-persona` | 仅人物性格 |
-| `/ex-rollback {slug} {version}` | 回滚到历史版本 |
-| `/delete-ex {slug}` | 删除 |
-
----
-
-## 效果示例
-
-> 输入：`ENFP 双子座 焦虑型 爱撒娇 翻旧账 嘴上说不在意其实比谁都在意`
-
-**场景一：日常聊天**
-
-```
-用户      > 在干嘛呢
-
-前任.skill > 刚下班
-           > 好累啊今天
-           > 你呢 怎么这个点才找我 🥺
+```text
+使用 create-ex 帮我做一个前任 skill
 ```
 
-**场景二：惹她生气了**
+或：
 
-```
-用户      > 不好意思刚才在忙
-
-前任.skill > 哦
-           > （过了5分钟）
-           > 你每次都说在忙
-           > 上次也是这样
+```text
+我想做一个前任 claw
 ```
 
-**场景三：撒娇**
+然后按提示提供：
 
-```
-用户      > 想吃什么
+1. 昵称/代号
+2. 关系基本信息
+3. 性格画像
+4. 可选原材料：聊天记录、照片文件夹、社交媒体导出、截图、PDF 或直接粘贴文本
 
-前任.skill > 随便啊
-用户      > 那吃面？
-前任.skill > 不想吃面
-用户      > 火锅？
-前任.skill > 嘿嘿你怎么知道的 💕
-```
-
----
-
-## 功能特性
-
-### 生成的 Skill 结构
-
-每个前任 Skill 由两部分组成：
-
-| 部分 | 内容 |
-|------|------|
-| **Part A — 共同记忆** | 关系时间线、日常仪式、偏好习惯、情感模式 |
-| **Part B — Persona** | 5 层性格结构：硬规则 → 身份 → 表达风格 → 情感逻辑 → 关系行为 |
-
-运行逻辑：`收到消息 → Persona 判断心情和态度 → Memories 提供记忆细节 → 用她的语气输出`
-
-### 支持的标签
-
-**恋爱性格**：爱撒娇 · 冷暴力 · 翻旧账 · 黏人 · 独立 · 细腻敏感 · 忽冷忽热 · 作 · 玻璃心 · 控制欲强 …
-
-**吵架模式**：冷战派 · 爆发派 · 讲道理派 · 先道歉型 · 死不认错
-
-**依恋类型**：安全型 · 焦虑型 · 回避型 · 混乱型
-
-**爱的表达**：言语肯定 · 服务行为 · 送礼物 · 肢体接触 · 高质量陪伴
-
-### 进化机制
-
-- **追加聊天记录** → 自动分析增量 → merge 进对应部分，不覆盖已有结论
-- **对话纠正** → 说「她不会这样，她应该是 xxx」→ 写入 Correction 层，立即生效
-- **版本管理** → 每次更新自动存档，支持回滚到任意历史版本
-
----
+默认会生成到当前项目的 `exes/{slug}/`。如果你希望 Codex 直接识别生成的人格 skill，可以让 Codex 写入 `~/.codex/skills/ex-{slug}/`。
 
 ## 项目结构
 
-```
-ex-skill/
-├── SKILL.md              # skill 入口（AgentSkills 标准 frontmatter）
-├── prompts/              # Prompt 模板
-│   ├── intake.md         #   对话式信息录入
-│   ├── memories_analyzer.md #  共同记忆提取
-│   ├── persona_analyzer.md  #  性格行为提取（含标签翻译表）
-│   ├── memories_builder.md  #  memories.md 生成模板
-│   ├── persona_builder.md   #  persona.md 五层结构模板
-│   ├── merger.md            #  增量 merge 逻辑
-│   └── correction_handler.md # 对话纠正处理
-├── tools/                # Python 工具
-│   ├── wechat_parser.py       # 微信聊天记录解析
-│   ├── imessage_parser.py     # iMessage 解析
-│   ├── sms_parser.py          # 短信解析
-│   ├── photo_analyzer.py      # 照片 EXIF 元数据分析
-│   ├── social_media_parser.py # 社交媒体解析
-│   ├── skill_writer.py        # Skill 文件管理
-│   └── version_manager.py     # 版本存档与回滚
-├── exes/                 # 生成的前任 Skill（gitignored）
-├── docs/PRD.md
+```text
+.
+├── SKILL.md
+├── agents/openai.yaml
+├── prompts/
+├── tools/
 ├── requirements.txt
+├── INSTALL.md
 └── LICENSE
 ```
 
----
+## 隐私提醒
 
-## 注意事项
+- 聊天记录和亲密关系描述非常敏感，建议先脱敏。
+- 优先提供有代表性的小样本，不要默认上传完整历史。
+- 生成内容只代表模型根据材料做出的推断，不等于真实人物本人。
 
-- **聊天记录质量决定 Skill 质量**：真实聊天记录 > 仅手动描述
-- 建议优先收集：她**主动发的**长消息 > **情感类消息** > 日常消息
-- 照片分析只提取元数据（日期/位置），不上传照片内容
-- 所有数据仅在本地处理，不会发送到任何外部服务
+## 来源
 
----
-
-<div align="center">
-
-MIT License © [perkfly](https://github.com/perkfly)
-
-</div>
+本项目基于 MIT 许可的 [perkfly/ex-skill](https://github.com/perkfly/ex-skill) 改造。

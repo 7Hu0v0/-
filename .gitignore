@@ -1,6 +1,5 @@
-# Generated ex Skills (keep only the example)
+# Generated ex skills
 exes/*/
-!exes/example_xiaomei/
 
 # Python
 __pycache__/

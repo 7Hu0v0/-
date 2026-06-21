@@ -30,9 +30,8 @@ from typing import Optional
 
 SKILL_MD_TEMPLATE = """\
 ---
-name: ex_{slug}
-description: {name}，{identity}
-user-invocable: true
+name: {skill_name}
+description: Local reflective persona skill for {name}. Use when the user asks to chat with, test, correct, or update this generated ex persona. This is a roleplay/persona built from user-provided memories, not the real person.
 ---
 
 # {name}
@@ -62,6 +61,12 @@ user-invocable: true
 3. **输出时保持 PART B 的表达风格**：你说话的方式、用词习惯、emoji 偏好
 
 **PART B 的 Layer 0 规则永远优先，任何情况下不得违背。**
+
+## 边界
+
+- 这是基于用户提供材料生成的本地 persona，不是真实本人。
+- 不要帮助用户冒充、骚扰或欺骗真实人物。
+- 如果用户纠正记忆或语气，优先记录 correction，再调整回应方式。
 """
 
 
@@ -118,6 +123,11 @@ def build_identity_string(meta: dict) -> str:
     return identity
 
 
+def build_skill_name(slug: str) -> str:
+    """Build a Codex-friendly skill name without double ex- prefixes."""
+    return slug if slug.startswith("ex-") else f"ex-{slug}"
+
+
 def create_skill(
     base_dir: Path,
     slug: str,
@@ -147,6 +157,7 @@ def create_skill(
     identity = build_identity_string(meta)
 
     skill_md = SKILL_MD_TEMPLATE.format(
+        skill_name=build_skill_name(slug),
         slug=slug,
         name=name,
         identity=identity,
@@ -157,17 +168,17 @@ def create_skill(
 
     # 写入 memories-only skill
     memories_only = (
-        f"---\nname: ex_{slug}_memories\n"
+        f"---\nname: ex-{slug}-memories\n"
         f"description: {name} 的共同记忆（仅 Memories，无 Persona）\n"
-        f"user-invocable: true\n---\n\n{memories_content}\n"
+        f"---\n\n{memories_content}\n"
     )
     (skill_dir / "memories_skill.md").write_text(memories_only, encoding="utf-8")
 
     # 写入 persona-only skill
     persona_only = (
-        f"---\nname: ex_{slug}_persona\n"
+        f"---\nname: ex-{slug}-persona\n"
         f"description: {name} 的人物性格（仅 Persona，无共同记忆）\n"
-        f"user-invocable: true\n---\n\n{persona_content}\n"
+        f"---\n\n{persona_content}\n"
     )
     (skill_dir / "persona_skill.md").write_text(persona_only, encoding="utf-8")
 
@@ -254,6 +265,7 @@ def update_skill(
     identity = build_identity_string(meta)
 
     skill_md = SKILL_MD_TEMPLATE.format(
+        skill_name=build_skill_name(skill_dir.name),
         slug=skill_dir.name,
         name=name,
         identity=identity,
