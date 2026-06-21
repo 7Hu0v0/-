@@ -84,6 +84,31 @@ pip3 install -r requirements.txt
 
 默认会生成到当前项目的 `exes/{slug}/`。如果你希望 Codex 直接识别生成的人格 skill，可以让 Codex 写入 `~/.codex/skills/ex-{slug}/`。
 
+## 从 iOS 微信备份导出单聊
+
+仓库提供 `tools/ios_chat_exporter.py`，用于从 Finder/iTunes 未加密备份中提取出的新版微信 `message_N.sqlite` 合并单聊。每个联系人会话表名按微信内部 `user_id` 的 MD5 计算。
+
+```bash
+python3 tools/ios_chat_exporter.py \
+  --source /path/to/message_2.sqlite wxid_example old_account \
+  --source /path/to/message_3.sqlite wxid_example2 new_account \
+  --output-dir /private/output \
+  --basename merged_chat
+```
+
+输出：
+
+```text
+merged_chat.jsonl
+merged_chat.txt
+```
+
+完整聊天记录包含高度敏感信息，不应提交到 GitHub。可用 `tools/chat_style_analyzer.py` 在本地生成风格证据摘要：
+
+```bash
+python3 tools/chat_style_analyzer.py merged_chat.jsonl --output style_evidence.md
+```
+
 ## 项目结构
 
 ```text

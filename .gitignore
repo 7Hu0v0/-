@@ -1,6 +1,11 @@
 # Generated ex skills
 exes/*/
 
+# Sensitive local chat exports and extracted mobile backups
+private_exports/
+wechat_ios_extract/
+*.jsonl
+
 # Python
 __pycache__/
 *.pyc

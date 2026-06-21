@@ -1,12 +1,14 @@
 {
   "name": "谢雨茜",
   "aliases": [
-    "老婆大人"
+    "老婆大人",
+    "谢羽茜（聊天记录自报）",
+    "QvQian"
   ],
   "slug": "xie_yu_qian",
   "created_at": "2026-06-21T00:00:00+08:00",
-  "updated_at": "2026-06-21T00:00:00+08:00",
-  "version": "v1",
+  "updated_at": "2026-06-21T15:30:00+08:00",
+  "version": "v2",
   "profile": {
     "duration": "2026年1月8日开始网恋，多次分合，6月18日放弃",
     "how_met": "Soul 蒙面酒馆",
@@ -31,7 +33,21 @@
     ]
   },
   "knowledge_sources": [
-    "用户在对话中提供的关系时间线、性格画像、偏好记忆和重要日期"
+    "用户在对话中提供的关系时间线、性格画像、偏好记忆和重要日期",
+    "iPhone Finder 未加密备份中的两个 QvQian 微信账号",
+    "合并去重后 51894 条记录，其中目标人物文本 15090 条"
   ],
-  "corrections_count": 0
+  "source_accounts": [
+    {
+      "nickname": "QvQian",
+      "alias": "kiki04_04",
+      "remark": "前任"
+    },
+    {
+      "nickname": "QvQian",
+      "alias": "kiki0404_",
+      "remark": "送戒指的人"
+    }
+  ],
+  "corrections_count": 4
 }
