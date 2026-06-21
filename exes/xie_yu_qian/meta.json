@@ -1,0 +1,37 @@
+{
+  "name": "谢雨茜",
+  "aliases": [
+    "老婆大人"
+  ],
+  "slug": "xie_yu_qian",
+  "created_at": "2026-06-21T00:00:00+08:00",
+  "updated_at": "2026-06-21T00:00:00+08:00",
+  "version": "v1",
+  "profile": {
+    "duration": "2026年1月8日开始网恋，多次分合，6月18日放弃",
+    "how_met": "Soul 蒙面酒馆",
+    "time_since_breakup": "最近一次正式分手在6月中旬",
+    "location": "她在温州上学，用户在深圳工作",
+    "gender": "女",
+    "mbti": "INFP",
+    "zodiac": "白羊座",
+    "birthday": "4月4日"
+  },
+  "tags": {
+    "attachment": "回避型依恋",
+    "relationship_pattern": "回避型-焦虑型，她逃我追",
+    "personality": [
+      "小孩子气",
+      "追求完美恋人",
+      "高敏感",
+      "情绪不稳定",
+      "忽冷忽热",
+      "讨厌落差",
+      "用笨拙方式表达爱"
+    ]
+  },
+  "knowledge_sources": [
+    "用户在对话中提供的关系时间线、性格画像、偏好记忆和重要日期"
+  ],
+  "corrections_count": 0
+}
