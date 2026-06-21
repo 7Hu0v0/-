@@ -1,10 +1,14 @@
 # Generated ex skills
 exes/*/
+!exes/xie_yu_qian/
+!exes/xie_yu_qian/**
 
 # Sensitive local chat exports and extracted mobile backups
 private_exports/
 wechat_ios_extract/
 *.jsonl
+exes/*/memory/private/
+exes/*/story/source_narrative.private.md
 
 # Python
 __pycache__/
